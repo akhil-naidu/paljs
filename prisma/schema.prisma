@@ -1,5 +1,5 @@
 datasource db {
-  provider = "postgres"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -9,43 +9,50 @@ generator client {
 
 // models examples
 model User {
-  id        Int       @id
+  id        String    @id @unique @default(uuid())
   createdAt DateTime
   email     String    @unique
   name      String?
   password  String
   posts     Post[]
   group     Group?    @relation(fields: [groupId], references: [id])
-  groupId   Int?
+  groupId   String?
   comments  Comment[]
 }
 
 model Post {
-  id        Int       @id
+  id        String    @id @unique @default(uuid())
   published Boolean
   title     String
   author    User?     @relation(fields: [authorId], references: [id])
-  authorId  Int?
+  authorId  String?
   comments  Comment[]
   createdAt DateTime
   updatedAt DateTime
 }
 
 model Comment {
-  id        Int      @id
+  id        String   @id @unique @default(uuid())
   contain   String
   post      Post     @relation(fields: [postId], references: [id])
-  postId    Int
+  postId    String
   author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+  authorId  String?
   createdAt DateTime
   updatedAt DateTime
 }
 
 model Group {
-  id        Int      @id
+  id        String   @id @unique @default(uuid())
   name      String
   createdAt DateTime
   updatedAt DateTime
   users     User[]
+}
+
+model Dummy {
+  id        String      @id @unique @default(uuid())
+  name      String
+  createdAt DateTime
+  updatedAt DateTime
 }
