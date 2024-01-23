@@ -9,8 +9,8 @@ generator client {
 
 // models examples
 model User {
-  id        String    @id @unique @default(uuid())
-  createdAt DateTime
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
   email     String    @unique
   name      String?
   password  String
@@ -21,31 +21,31 @@ model User {
 }
 
 model Post {
-  id        String    @id @unique @default(uuid())
-  published Boolean
+  id        String    @id @default(uuid())
+  published Boolean   @default(false)
   title     String
   author    User?     @relation(fields: [authorId], references: [id])
   authorId  String?
   comments  Comment[]
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Comment {
-  id        String   @id @unique @default(uuid())
+  id        String   @id @default(uuid())
   contain   String
   post      Post     @relation(fields: [postId], references: [id])
   postId    String
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  String?
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Group {
-  id        String   @id @unique @default(uuid())
+  id        String   @id @default(uuid())
   name      String
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   users     User[]
 }
