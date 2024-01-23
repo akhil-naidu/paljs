@@ -1,5 +1,5 @@
 datasource db {
-  provider = "sqlite"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -9,43 +9,43 @@ generator client {
 
 // models examples
 model User {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
+  id        Int       @id
+  createdAt DateTime
   email     String    @unique
   name      String?
   password  String
   posts     Post[]
-  group     Group?    @relation(fields: [groupId], onDelete: SetNull, references: [id])
+  group     Group?    @relation(fields: [groupId], references: [id])
   groupId   Int?
   comments  Comment[]
 }
 
 model Post {
-  id        Int       @id @default(autoincrement())
-  published Boolean   @default(false)
+  id        Int       @id
+  published Boolean
   title     String
-  author    User?     @relation(fields: [authorId], onDelete: Cascade, references: [id])
+  author    User?     @relation(fields: [authorId], references: [id])
   authorId  Int?
   comments  Comment[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime
+  updatedAt DateTime
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
+  id        Int      @id
   contain   String
-  post      Post     @relation(fields: [postId], onDelete: Cascade, references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
   postId    Int
-  author    User?    @relation(fields: [authorId], onDelete: SetNull, references: [id])
+  author    User?    @relation(fields: [authorId], references: [id])
   authorId  Int?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime
+  updatedAt DateTime
 }
 
 model Group {
-  id        Int      @id @default(autoincrement())
+  id        Int      @id
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime
+  updatedAt DateTime
   users     User[]
 }
