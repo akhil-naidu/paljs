@@ -49,10 +49,3 @@ model Group {
   updatedAt DateTime
   users     User[]
 }
-
-model Dummy {
-  id        String      @id @unique @default(uuid())
-  name      String
-  createdAt DateTime
-  updatedAt DateTime
-}
